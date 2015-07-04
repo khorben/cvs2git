@@ -5,6 +5,7 @@ CVS_MODULE=src
 CVS=cvs
 GIT=git
 MKDIR=mkdir -p
+RM=rm -f
 
 WORKDIR1=work.import
 WORKDIR2=work.increment
@@ -78,7 +79,7 @@ repository-analyze:
 	(here=`pwd`; cd ${CVS_REPOSITORY_DIR}/${CVS_MODULE} && find . -type f -newer $$here/${WORKDIR2}/timestamp.git -name '*,v' -print0 | xargs -0 -n5000 $$here/rcs2js) > ${WORKDIR2}/log
 #	(here=`pwd`; cd ${CVS_REPOSITORY_DIR}/${CVS_MODULE} && find . -type f -name '*,v' -print0 | xargs -0 -n5000 $$here/rcs2js) > ${WORKDIR2}/log
 	env TMPDIR=/var/tmp sort ${WORKDIR2}/log > ${WORKDIR2}/log.sorted
-	rm ${WORKDIR2}/log
+	${RM} -- ${WORKDIR2}/log
 	./js2jslog_branch -t `cat ${WORKDIR2}/timestamp.git` -d ${WORKDIR2} ${WORKDIR2}/log.sorted
 
 update-commit2:
@@ -88,14 +89,14 @@ update-commit-force:
 	./jslog2gitappendcommit -f ${WORKDIR2}/commit.#trunk.jslog '#trunk' ${GITDIR} ${CVSTMPDIR}
 
 distclean:
-	rm -fr ${WORKDIR1} ${WORKDIR2} ${GITDIR} ${CVSTMPDIR}
+	${RM} -r -- ${WORKDIR1} ${WORKDIR2} ${GITDIR} ${CVSTMPDIR}
 
 sync-cvs-sametime-git:
 	echo "`${GIT} --git-dir=${GITDIR}/.git show --format='%ai' | head -1`" > GITTIME
-	rm -fr ${CVSTMPDIR} && env TZ=UTC ${CVS} -d ${CVS_REPOSITORY_DIR} co -D"`${GIT} --git-dir=${GITDIR}/.git show --format='%ai' | head -1`" -d ${CVSTMPDIR} ${CVS_MODULE}
+	${RM} -r -- ${CVSTMPDIR} && env TZ=UTC ${CVS} -d ${CVS_REPOSITORY_DIR} co -D"`${GIT} --git-dir=${GITDIR}/.git show --format='%ai' | head -1`" -d ${CVSTMPDIR} ${CVS_MODULE}
 
 sync-cvs-sametime-git2:
-	rm -fr cvstmp2 && ${CVS} -d ${CVS_REPOSITORY_DIR} co -D"`${GIT} --git-dir=${GITDIR}/.git show --format='%ai' | head -1`" -d cvstmp2 ${CVS_MODULE}
+	${RM} -r -- cvstmp2 && ${CVS} -d ${CVS_REPOSITORY_DIR} co -D"`${GIT} --git-dir=${GITDIR}/.git show --format='%ai' | head -1`" -d cvstmp2 ${CVS_MODULE}
 
 compare-dir:
 	./compare_dir ${CVSTMPDIR} ${GITDIR}
@@ -129,7 +130,7 @@ cvscheckout:
 	${CVS} -q -d ${CVS_REPOSITORY_DIR} co -d${CVSTMPDIR} ${CVS_MODULE}
 
 cvsupdate:
-	rm -fr ${CVSTMPDIR} && ${CVS} -d ${CVS_REPOSITORY_DIR} co -d ${CVSTMPDIR} ${CVS_MODULE}
+	${RM} -r -- ${CVSTMPDIR} && ${CVS} -d ${CVS_REPOSITORY_DIR} co -d ${CVSTMPDIR} ${CVS_MODULE}
 
 creategitimport:
 	./jslog2fastexport ${CVS_REPOSITORY_DIR}/${CVS_MODULE} ${CVSTMPDIR} ${WORKDIR1}/commit.#trunk.jslog > ${WORKDIR1}/gitimportfile
@@ -147,7 +148,7 @@ gitinit:
 jslog: makeworkdir1
 	(here=`pwd`; cd ${CVS_REPOSITORY_DIR}/${CVS_MODULE} && find . -type f -name '*,v' -print0 | xargs -0 -n5000 $$here/rcs2js) > ${WORKDIR1}/log
 	sort ${WORKDIR1}/log > ${WORKDIR1}/log.sorted
-	rm ${WORKDIR1}/log
+	${RM} -- ${WORKDIR1}/log
 	./js2jslog_branch -d ${WORKDIR1} ${WORKDIR1}/log.sorted
 
 branchinfo:
