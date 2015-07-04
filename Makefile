@@ -3,6 +3,8 @@ CVS_REPOSITORY_DIR=/home/cvs/cvs2git/cvsroot-netbsd
 CVS_MODULE=src
 
 CVS=cvs
+MKDIR=mkdir -p
+
 WORKDIR1=work.import
 WORKDIR2=work.increment
 GITDIR=gitwork
@@ -118,9 +120,7 @@ pullup_from_cvs_to_git:
 	false
 
 get-cvsrepository:
-	@if [ ! -d ${CVS_REPOSITORY_DIR} ] ; then	\
-		mkdir ${CVS_REPOSITORY_DIR};		\
-	fi
+	${MKDIR} -- ${CVS_REPOSITORY_DIR}
 	env RSYNC_PROXY=${RSYNC_PROXY} ./rsync_completely.sh rsync://anoncvs.NetBSD.org/cvsroot/CVSROOT ${CVS_REPOSITORY_DIR}
 	env RSYNC_PROXY=${RSYNC_PROXY} ./rsync_completely.sh rsync://anoncvs.NetBSD.org/cvsroot/src     ${CVS_REPOSITORY_DIR}
 
@@ -140,7 +140,7 @@ gitimport:
 	(cd ${GITDIR} && git fast-import) < ${WORKDIR1}/gitimportfile
 
 gitinit:
-	mkdir ${GITDIR}
+	${MKDIR} -- ${GITDIR}
 	(cd ${GITDIR} && git init)
 
 jslog: makeworkdir1
@@ -156,11 +156,7 @@ branchinfo:
 	./branchinfo2tag    ${WORKDIR1}/branchinfo > ${WORKDIR1}/tags
 
 makeworkdir1:
-	@if [ ! -d ${WORKDIR1} ] ; then	\
-		mkdir ${WORKDIR1};	\
-	fi
+	${MKDIR} -- ${WORKDIR1}
 
 makeworkdir2:
-	@if [ ! -d ${WORKDIR2} ] ; then	\
-		mkdir ${WORKDIR2};	\
-	fi
+	${MKDIR} -- ${WORKDIR2}
