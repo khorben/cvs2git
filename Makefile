@@ -16,40 +16,40 @@ usage:
 
 
 import:
-	make import0
-	make import1
+	${MAKE} import0
+	${MAKE} import1
 
 import0:
-	make get-cvsrepository
-	make makeworkdir1
-	make jslog
-	make branchinfo
+	${MAKE} get-cvsrepository
+	${MAKE} makeworkdir1
+	${MAKE} jslog
+	${MAKE} branchinfo
 
 import1:
-	make cvscheckout
-	make creategitimport
-	make gitinit
-	make gitimport
-	make gitreset
+	${MAKE} cvscheckout
+	${MAKE} creategitimport
+	${MAKE} gitinit
+	${MAKE} gitimport
+	${MAKE} gitreset
 
 force-update:
-	make get-cvsrepository
-	make update-sync
-	make repository-analyze
-	make cvsupdate
-	make update-commit2
-	make compare-dir
+	${MAKE} get-cvsrepository
+	${MAKE} update-sync
+	${MAKE} repository-analyze
+	${MAKE} cvsupdate
+	${MAKE} update-commit2
+	${MAKE} compare-dir
 
 update:
-	make get-cvsrepository
-	make update-sametime
-	make compare-dir-hack
-	make repository-analyze
-	make cvsupdate
-	make git-checkout-master
-	make update-commit2
-	make compare-dir
-	make push
+	${MAKE} get-cvsrepository
+	${MAKE} update-sametime
+	${MAKE} compare-dir-hack
+	${MAKE} repository-analyze
+	${MAKE} cvsupdate
+	${MAKE} git-checkout-master
+	${MAKE} update-commit2
+	${MAKE} compare-dir
+	${MAKE} push
 
 #
 #
@@ -57,19 +57,19 @@ update:
 
 update-sync:
 	@if [ ! -d ${CVS_REPOSITORY_DIR} ] ; then	\
-		make cvscheckout;			\
+		${MAKE} cvscheckout;			\
 	fi
-	make sync-cvs-sametime-git
-	make copy-from-cvs-to-git-and-commit
+	${MAKE} sync-cvs-sametime-git
+	${MAKE} copy-from-cvs-to-git-and-commit
 
 update-sametime:
 	@if [ ! -d ${CVS_REPOSITORY_DIR} ] ; then	\
-		make cvscheckout;			\
+		${MAKE} cvscheckout;			\
 	fi
-	make sync-cvs-sametime-git
+	${MAKE} sync-cvs-sametime-git
 
 repository-analyze:
-	make makeworkdir2
+	${MAKE} makeworkdir2
 	git --git-dir=${GITDIR}/.git show --format='%at' | head -1 > ${WORKDIR2}/timestamp.git
 	perl -e '$$t = shift; utime $$t - 1, $$t - 1, shift' `cat ${WORKDIR2}/timestamp.git` ${WORKDIR2}/timestamp.git
 	(here=`pwd`; cd ${CVS_REPOSITORY_DIR}/${CVS_MODULE} && find . -type f -newer $$here/${WORKDIR2}/timestamp.git -name '*,v' -print0 | xargs -0 -n5000 $$here/rcs2js) > ${WORKDIR2}/log
