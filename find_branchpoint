@@ -8,7 +8,7 @@ use JSON::XS;
 
 sub usage {
 	die <<__USAGE__;
-usage: find_branchpoint <jslog> <branchlog> <tag or branch> [<from branch>]
+Usage: find_branchpoint <jslog> <branchlog> <tag or branch> [<from branch>]
 	-q	quiet
 	-l	output result list
 	-T	dump only tagged file (don't search)

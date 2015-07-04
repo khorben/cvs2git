@@ -10,7 +10,7 @@ my $DEBUG_MARK = 0;
 my $DEBUG_COMMIT = 1;
 
 sub usage {
-	die "usage: jslog2fastexport repository-path cvscheckout-path commit.jslog\n";
+	die "Usage: jslog2fastexport repository-path cvscheckout-path commit.jslog\n";
 }
 
 usage() unless ($#ARGV == 2);

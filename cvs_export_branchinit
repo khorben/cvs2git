@@ -6,7 +6,7 @@ use warnings;
 my $dstdir = ".";
 
 sub usage {
-	die "usage: cvs_co_branchinit cvsworkdir branch branchinfo\n";
+	die "Usage: cvs_co_branchinit cvsworkdir branch branchinfo\n";
 }
 
 usage() unless ($#ARGV == 2);

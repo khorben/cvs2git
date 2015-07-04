@@ -14,7 +14,7 @@ TMPDIR=/var/tmp
 BRANCH=$1; shift
 
 if [ "X$BRANCH" = "X" ]; then
-	echo 'usage: update_branch.sh <BRANCH>'
+	echo 'Usage: update_branch.sh <BRANCH>'
 	exit
 fi
 

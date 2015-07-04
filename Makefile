@@ -16,7 +16,7 @@ TMPDIR=/var/tmp
 RSYNC_PROXY=your.proxyserver.local:8080
 
 usage:
-	@echo "usage: make <target>"
+	@echo "Usage: make <target>"
 
 
 import:

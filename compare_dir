@@ -10,7 +10,7 @@ $| = 1;
 
 sub usage {
 	die <<__USAGE__;
-usage: compare_dir [-X] <cvsdir> <gitdir>
+Usage: compare_dir [-X] <cvsdir> <gitdir>
 	-x	ignore CVS keyword Attic
 	-X	force fix CVS keyword Attic
 __USAGE__

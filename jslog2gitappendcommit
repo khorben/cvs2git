@@ -9,7 +9,7 @@ use JSON::XS;
 
 sub usage {
 	die <<__USAGE__;
-usage: jslog2gitappendcommit [options] <jslog> <branch> <gitdir> <cvs-checkoutdir>
+Usage: jslog2gitappendcommit [options] <jslog> <branch> <gitdir> <cvs-checkoutdir>
 	-v		verbose
 	-n		dry run (don't commit)
 	-D		debug

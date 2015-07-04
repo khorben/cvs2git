@@ -8,7 +8,7 @@ use JSON::XS;
 
 sub usage {
 	die <<__USAGE__;
-usage: js2jslog [-t unixtime] [-d outputdir] jslog
+Usage: js2jslog [-t unixtime] [-d outputdir] jslog
 __USAGE__
 }
 
