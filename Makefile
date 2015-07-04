@@ -3,6 +3,7 @@ CVS_REPOSITORY_DIR=/home/cvs/cvs2git/cvsroot-netbsd
 CVS_MODULE=src
 
 CVS=cvs
+GIT=git
 MKDIR=mkdir -p
 
 WORKDIR1=work.import
@@ -72,7 +73,7 @@ update-sametime:
 
 repository-analyze:
 	${MAKE} makeworkdir2
-	git --git-dir=${GITDIR}/.git show --format='%at' | head -1 > ${WORKDIR2}/timestamp.git
+	${GIT} --git-dir=${GITDIR}/.git show --format='%at' | head -1 > ${WORKDIR2}/timestamp.git
 	perl -e '$$t = shift; utime $$t - 1, $$t - 1, shift' `cat ${WORKDIR2}/timestamp.git` ${WORKDIR2}/timestamp.git
 	(here=`pwd`; cd ${CVS_REPOSITORY_DIR}/${CVS_MODULE} && find . -type f -newer $$here/${WORKDIR2}/timestamp.git -name '*,v' -print0 | xargs -0 -n5000 $$here/rcs2js) > ${WORKDIR2}/log
 #	(here=`pwd`; cd ${CVS_REPOSITORY_DIR}/${CVS_MODULE} && find . -type f -name '*,v' -print0 | xargs -0 -n5000 $$here/rcs2js) > ${WORKDIR2}/log
@@ -90,11 +91,11 @@ distclean:
 	rm -fr ${WORKDIR1} ${WORKDIR2} ${GITDIR} ${CVSTMPDIR}
 
 sync-cvs-sametime-git:
-	echo "`git --git-dir=${GITDIR}/.git show --format='%ai' | head -1`" > GITTIME
-	rm -fr ${CVSTMPDIR} && env TZ=UTC ${CVS} -d ${CVS_REPOSITORY_DIR} co -D"`git --git-dir=${GITDIR}/.git show --format='%ai' | head -1`" -d ${CVSTMPDIR} ${CVS_MODULE}
+	echo "`${GIT} --git-dir=${GITDIR}/.git show --format='%ai' | head -1`" > GITTIME
+	rm -fr ${CVSTMPDIR} && env TZ=UTC ${CVS} -d ${CVS_REPOSITORY_DIR} co -D"`${GIT} --git-dir=${GITDIR}/.git show --format='%ai' | head -1`" -d ${CVSTMPDIR} ${CVS_MODULE}
 
 sync-cvs-sametime-git2:
-	rm -fr cvstmp2 && ${CVS} -d ${CVS_REPOSITORY_DIR} co -D"`git --git-dir=${GITDIR}/.git show --format='%ai' | head -1`" -d cvstmp2 ${CVS_MODULE}
+	rm -fr cvstmp2 && ${CVS} -d ${CVS_REPOSITORY_DIR} co -D"`${GIT} --git-dir=${GITDIR}/.git show --format='%ai' | head -1`" -d cvstmp2 ${CVS_MODULE}
 
 compare-dir:
 	./compare_dir ${CVSTMPDIR} ${GITDIR}
@@ -104,17 +105,17 @@ compare-dir-hack:
 
 
 git-checkout-master:
-	cd ${GITDIR} && git checkout master && git clean -f
+	cd ${GITDIR} && ${GIT} checkout master && ${GIT} clean -f
 
 push:
 	./PUSH
 
 # detect cvs repository has renamed/modified manually
 copy-from-cvs-to-git-and-commit:
-	cd ${GITDIR} && git checkout master && git clean -f
+	cd ${GITDIR} && ${GIT} checkout master && ${GIT} clean -f
 	cd ${CVSTMPDIR} && rsync --stats -vOcrI --exclude=CVS --exclude=.git --delete * ../${GITDIR}/
-	git --git-dir=gitwork/.git show --format='%ai' | head -1 > ${WORKDIR2}/lastcommit
-	-cd ${GITDIR} && git add -A && env GIT_AUTHOR_DATE="`cat ../${WORKDIR2}/lastcommit`" GIT_COMMITTER_DATE="`cat ../${WORKDIR2}/lastcommit`" GIT_AUTHOR_NAME='from cvs to git' GIT_AUTHOR_EMAIL='from cvs to git' GIT_COMMITTER_NAME='from cvs to git' GIT_COMMITTER_EMAIL='from cvs to git' git commit -m 'sync from cvs repository'
+	${GIT} --git-dir=gitwork/.git show --format='%ai' | head -1 > ${WORKDIR2}/lastcommit
+	-cd ${GITDIR} && ${GIT} add -A && env GIT_AUTHOR_DATE="`cat ../${WORKDIR2}/lastcommit`" GIT_COMMITTER_DATE="`cat ../${WORKDIR2}/lastcommit`" GIT_AUTHOR_NAME='from cvs to git' GIT_AUTHOR_EMAIL='from cvs to git' GIT_COMMITTER_NAME='from cvs to git' GIT_COMMITTER_EMAIL='from cvs to git' ${GIT} commit -m 'sync from cvs repository'
 
 pullup_from_cvs_to_git:
 	false
@@ -134,14 +135,14 @@ creategitimport:
 	./jslog2fastexport ${CVS_REPOSITORY_DIR}/${CVS_MODULE} ${CVSTMPDIR} ${WORKDIR1}/commit.#trunk.jslog > ${WORKDIR1}/gitimportfile
 
 gitreset:
-	(cd ${GITDIR} && git reset --hard)
+	(cd ${GITDIR} && ${GIT} reset --hard)
 
 gitimport:
-	(cd ${GITDIR} && git fast-import) < ${WORKDIR1}/gitimportfile
+	(cd ${GITDIR} && ${GIT} fast-import) < ${WORKDIR1}/gitimportfile
 
 gitinit:
 	${MKDIR} -- ${GITDIR}
-	(cd ${GITDIR} && git init)
+	(cd ${GITDIR} && ${GIT} init)
 
 jslog: makeworkdir1
 	(here=`pwd`; cd ${CVS_REPOSITORY_DIR}/${CVS_MODULE} && find . -type f -name '*,v' -print0 | xargs -0 -n5000 $$here/rcs2js) > ${WORKDIR1}/log
