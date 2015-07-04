@@ -18,7 +18,7 @@ if [ "X$BRANCH" = "X" ]; then
 	exit
 fi
 
-(cd $GITDIR; git checkout ${BRANCH})
+(cd $GITDIR && git checkout ${BRANCH})
 
 # get last commit timestamp about ${BRANCH}
 git --git-dir=${GITDIR}/.git show ${BRANCH} --format='%at' 2> /dev/null | head -1 > ${WORKDIR2}/timestamp.git 
