@@ -2,7 +2,7 @@
 CVS_REPOSITORY_DIR=/home/cvs/cvs2git/cvsroot-netbsd
 CVS_MODULE=src
 
-CVS=/usr/local/bin/cvs
+CVS=cvs
 WORKDIR1=work.import
 WORKDIR2=work.increment
 GITDIR=gitwork

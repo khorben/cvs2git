@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CVS=/usr/local/bin/cvs
+CVS=cvs
 CVS_REPOSITORY_DIR=/home/cvs/cvs2git/cvsroot-netbsd
 CVS_MODULE=src
 
