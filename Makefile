@@ -165,3 +165,5 @@ makeworkdir1:
 
 makeworkdir2:
 	${MKDIR} -- ${WORKDIR2}
+
+.PHONY: branchinfo creategitimport cvscheckout cvsupdate distclean gitimport gitinit gitreset import0 import1 import jslog makeworkdir1 makeworkdir2 push update usage
