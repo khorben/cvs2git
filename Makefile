@@ -96,7 +96,8 @@ sync-cvs-sametime-git:
 	${RM} -r -- ${CVSTMPDIR} && env TZ=UTC ${CVS} -d ${CVS_REPOSITORY_DIR} co -D"`${GIT} --git-dir=${GITDIR}/.git show --format='%ai' | head -1`" -d ${CVSTMPDIR} ${CVS_MODULE}
 
 sync-cvs-sametime-git2:
-	${RM} -r -- cvstmp2 && ${CVS} -d ${CVS_REPOSITORY_DIR} co -D"`${GIT} --git-dir=${GITDIR}/.git show --format='%ai' | head -1`" -d cvstmp2 ${CVS_MODULE}
+	${RM} -r -- cvstmp2
+	${CVS} -d ${CVS_REPOSITORY_DIR} co -D"`${GIT} --git-dir=${GITDIR}/.git show --format='%ai' | head -1`" -d cvstmp2 ${CVS_MODULE}
 
 compare-dir:
 	./compare_dir ${CVSTMPDIR} ${GITDIR}
@@ -130,7 +131,8 @@ cvscheckout:
 	${CVS} -q -d ${CVS_REPOSITORY_DIR} co -d${CVSTMPDIR} ${CVS_MODULE}
 
 cvsupdate:
-	${RM} -r -- ${CVSTMPDIR} && ${CVS} -d ${CVS_REPOSITORY_DIR} co -d ${CVSTMPDIR} ${CVS_MODULE}
+	${RM} -r -- ${CVSTMPDIR}
+	${CVS} -d ${CVS_REPOSITORY_DIR} co -d ${CVSTMPDIR} ${CVS_MODULE}
 
 creategitimport:
 	./jslog2fastexport ${CVS_REPOSITORY_DIR}/${CVS_MODULE} ${CVSTMPDIR} ${WORKDIR1}/commit.#trunk.jslog > ${WORKDIR1}/gitimportfile
