@@ -12,6 +12,7 @@ WORKDIR1=work.import
 WORKDIR2=work.increment
 GITDIR=gitwork
 CVSTMPDIR=cvstmp
+CVSTMPDIR2=cvstmp2
 TMPDIR=/var/tmp
 
 RSYNC_PROXY=your.proxyserver.local:8080
@@ -97,8 +98,8 @@ sync-cvs-sametime-git:
 	${RM} -r -- ${CVSTMPDIR} && env TZ=UTC ${CVS} -d ${CVS_REPOSITORY_DIR} co -D"`${GIT} --git-dir=${GITDIR}/.git show --format='%ai' | head -1`" -d ${CVSTMPDIR} ${CVS_MODULE}
 
 sync-cvs-sametime-git2:
-	${RM} -r -- cvstmp2
-	${CVS} -d ${CVS_REPOSITORY_DIR} co -D"`${GIT} --git-dir=${GITDIR}/.git show --format='%ai' | head -1`" -d cvstmp2 ${CVS_MODULE}
+	${RM} -r -- ${CVSTMPDIR2}
+	${CVS} -d ${CVS_REPOSITORY_DIR} co -D"`${GIT} --git-dir=${GITDIR}/.git show --format='%ai' | head -1`" -d ${CVSTMPDIR2} ${CVS_MODULE}
 
 compare-dir:
 	./compare_dir ${CVSTMPDIR} ${GITDIR}
