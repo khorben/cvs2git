@@ -152,7 +152,6 @@ jslog: makeworkdir1
 	./js2jslog_branch -d ${WORKDIR1} ${WORKDIR1}/log.sorted
 
 branchinfo:
-	WD=`pwd`
 	(here=`pwd`; cd ${CVS_REPOSITORY_DIR}/${CVS_MODULE} && find . -type f -name '*,v' -print0 | xargs -0 -n5000 $$here/rcs2taginfo) > ${WORKDIR1}/branchinfo
 	./branchinfo2branch ${WORKDIR1}/branchinfo > ${WORKDIR1}/branches
 	./branchinfo2tag    ${WORKDIR1}/branchinfo > ${WORKDIR1}/tags
