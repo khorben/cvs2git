@@ -5,6 +5,7 @@ CVS_MODULE=src
 CVS=cvs
 GIT=git
 MKDIR=mkdir -p
+PERL=perl
 RM=rm -f
 
 WORKDIR1=work.import
@@ -75,7 +76,7 @@ update-sametime:
 repository-analyze:
 	${MAKE} makeworkdir2
 	${GIT} --git-dir=${GITDIR}/.git show --format='%at' | head -1 > ${WORKDIR2}/timestamp.git
-	perl -e '$$t = shift; utime $$t - 1, $$t - 1, shift' `cat ${WORKDIR2}/timestamp.git` ${WORKDIR2}/timestamp.git
+	${PERL} -e '$$t = shift; utime $$t - 1, $$t - 1, shift' `cat ${WORKDIR2}/timestamp.git` ${WORKDIR2}/timestamp.git
 	(here=`pwd`; cd ${CVS_REPOSITORY_DIR}/${CVS_MODULE} && find . -type f -newer $$here/${WORKDIR2}/timestamp.git -name '*,v' -print0 | xargs -0 -n5000 $$here/rcs2js) > ${WORKDIR2}/log
 #	(here=`pwd`; cd ${CVS_REPOSITORY_DIR}/${CVS_MODULE} && find . -type f -name '*,v' -print0 | xargs -0 -n5000 $$here/rcs2js) > ${WORKDIR2}/log
 	env TMPDIR=/var/tmp sort ${WORKDIR2}/log > ${WORKDIR2}/log.sorted
