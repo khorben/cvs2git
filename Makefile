@@ -21,41 +21,15 @@ usage:
 	@echo "Usage: make <target>"
 
 
-import:
-	${MAKE} import0
-	${MAKE} import1
+import: import0 import1
 
-import0:
-	${MAKE} get-cvsrepository
-	${MAKE} makeworkdir1
-	${MAKE} jslog
-	${MAKE} branchinfo
+import0: get-cvsrepository jslog branchinfo
 
-import1:
-	${MAKE} cvscheckout
-	${MAKE} creategitimport
-	${MAKE} gitinit
-	${MAKE} gitimport
-	${MAKE} gitreset
+import1: cvscheckout creategitimport gitinit gitimport gitreset
 
-force-update:
-	${MAKE} get-cvsrepository
-	${MAKE} update-sync
-	${MAKE} repository-analyze
-	${MAKE} cvsupdate
-	${MAKE} update-commit2
-	${MAKE} compare-dir
+force-update: get-cvsrepository update-sync repository-analyze cvsupdate update-commit2 compare-dir
 
-update:
-	${MAKE} get-cvsrepository
-	${MAKE} update-sametime
-	${MAKE} compare-dir-hack
-	${MAKE} repository-analyze
-	${MAKE} cvsupdate
-	${MAKE} git-checkout-master
-	${MAKE} update-commit2
-	${MAKE} compare-dir
-	${MAKE} push
+update: get-cvsrepository update-sametime compare-dir-hack repository-analyze cvsupdate git-checkout-master update-commit2 compare-dir push
 
 #
 #
@@ -74,8 +48,7 @@ update-sametime:
 	fi
 	${MAKE} sync-cvs-sametime-git
 
-repository-analyze:
-	${MAKE} makeworkdir2
+repository-analyze: makeworkdir2
 	${GIT} --git-dir=${GITDIR}/.git show --format='%at' | head -1 > ${WORKDIR2}/timestamp.git
 	${PERL} -e '$$t = shift; utime $$t - 1, $$t - 1, shift' `cat ${WORKDIR2}/timestamp.git` ${WORKDIR2}/timestamp.git
 	(here=`pwd`; cd ${CVS_REPOSITORY_DIR}/${CVS_MODULE} && find . -type f -newer $$here/${WORKDIR2}/timestamp.git -name '*,v' -print0 | xargs -0 -n5000 $$here/rcs2js) > ${WORKDIR2}/log
